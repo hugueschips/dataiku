@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583401499042.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B69242BE",
+    "lastKnownWriteTime" : 1583750311,
+    "last_content_update" : 1583750311969,
+    "path" : "~/Workplace/R/dataiku/src/explore.R",
+    "project_path" : "src/explore.R",
+    "properties" : {
+        "cursorPosition" : "156,0",
+        "scrollLine" : "144",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583749827715.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4B3C3F0E",
+    "lastKnownWriteTime" : 1583749826,
+    "last_content_update" : 1583749827715,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "2F460E57",
+        "caption" : "calPredict",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=calPredict&cache_key=2F460E57",
+        "displayedObservations" : 98073,
+        "environment" : "",
+        "expression" : "calPredict",
+        "object" : "calPredict",
+        "preview" : 0,
+        "totalObservations" : 98073,
+        "variables" : 4
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
