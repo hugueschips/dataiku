@@ -10,12 +10,19 @@ library(tidyverse)
 library(dplyr)
 library(dbplyr)
 library(xgboost)
-library(caret)
 library(tibble)
 library(ggplot2)
 library(pROC)
 library(earth)
+library(nnet)
+library(rocc)
+library(caret)
 
+# Project metadata
+method = 'xgbTree'
+# method = 'mlpKerasDecayCost'
+# method = 'nnet'
+# method = 'rocc'
 
 # Files
 trainFile <- "./data/census_income_learn.csv"
@@ -40,10 +47,15 @@ customPreprocess2 <- function(trainDataRaw) {
   trainDataDummies
 }
 
-allData = bind_rows(
+allData <- bind_rows(
   trainDataRaw %>% mutate(train = 1),
   testDataRaw %>% mutate(train = 0)) %>%
   customPreprocess2
+
+# Remove columns with near zero variance.
+nzv <- nearZeroVar(allData)
+allData <- allData[,-nzv]
+
 allData %>% head #See result
 
 # trainDataClean <- trainDataRaw %>% customPreprocess2
@@ -112,8 +124,8 @@ fitControl <- trainControl(
 fit <- train(
   x = xytrain %>% select(-class) %>% as.matrix,
   y = xytrain$class,
-  tuneLength = 1,
-  method = 'xgbTree',
+  tuneLength = 5,
+  method = method,
   trControl = fitControl,
   metric = 'ROC',
   verbose = TRUE
@@ -130,10 +142,10 @@ varImp(fit, scale = TRUE)
 calPredict <- predict(fit, 
                             newdata = xycal %>% select(-class) %>% as.matrix, 
                             type = 'prob') %>%
-  mutate(pred = if_else(below50 > .8, 'below50', 'over50') %>% factor) %>%
+  mutate(pred = if_else(below50 > .5, 'below50', 'over50') %>% factor) %>%
   mutate(obs = xycal$class %>% factor)
 
-threshold <- 0.7
+threshold <- 0.6
 
 calPredict <- calPredict %>%
   mutate(pred = if_else(below50 > threshold, 'below50', 'over50') %>% factor)
@@ -159,6 +171,6 @@ pROC_obj_cal
 plot(pROC_obj_cal)
 
 
-saveRDS(fit, file = 'model1.RData')
+saveRDS(fit, file = 'model_nn.RData')
 
 

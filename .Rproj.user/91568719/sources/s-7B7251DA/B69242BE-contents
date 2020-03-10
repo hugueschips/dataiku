@@ -15,7 +15,13 @@ library(tibble)
 library(ggplot2)
 library(pROC)
 library(earth)
+library(keras)
+library(mxnet)
 
+# Project metadata
+method = 'xgbTree'
+method = 'mlpKerasDecayCost'
+method = 'mxnet'
 
 # Files
 trainFile <- "./data/census_income_learn.csv"
