@@ -51,6 +51,8 @@ allData <- bind_rows(
   trainDataRaw %>% mutate(train = 1),
   testDataRaw %>% mutate(train = 0)) %>%
   customPreprocess2
+rm(trainDataRaw)
+rm(testDataRaw)
 
 ######################## Remove columns with near zero variance
 ######################## necessary for many algorithms
@@ -155,8 +157,8 @@ varImp(fit, scale = TRUE)
 ############################# Accuracy should not be considered as the dataset is imbalanced
 ######## Predict calibration set
 calPredict <- predict(fit, 
-                            newdata = xycal %>% select(-class) %>% as.matrix, 
-                            type = 'prob') %>%
+                      newdata = xycal %>% select(-class) %>% as.matrix, 
+                      type = 'prob') %>%
   mutate(pred = if_else(below50 > .5, 'below50', 'over50') %>% factor) %>%
   mutate(obs = xycal$class %>% factor)
 
@@ -165,7 +167,7 @@ pROC_obj_cal <- roc(calPredict$obs, calPredict$below50, ci = TRUE)
 pROC_obj_cal
 plot(pROC_obj_cal)
 ############# Set threshold using ROC curve
-threshold <- 0.8
+threshold <- 0.7
 calPredict <- calPredict %>%
   mutate(pred = if_else(below50 > threshold, 'below50', 'over50') %>% factor)
 ############# See confusion matrix with set threshold
