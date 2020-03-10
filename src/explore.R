@@ -53,25 +53,13 @@ allData <- bind_rows(
   customPreprocess2
 
 ######################## Remove columns with near zero variance
+######################## necessary for many algorithms
 ######################## it is not needed by algorithms like xgboost
 ######################## but it speeds up the training
 nzv <- nearZeroVar(allData)
 allData <- allData[,-nzv]
 
 allData %>% head #See result
-
-######################## Produce correlation matrix of training set
-correlationMatrix <- cor(allData %>% select_if(is.numeric))
-print(correlationMatrix)
-################################## summarize the correlation matrix
-corrplot(correlationMatrix)
-################################## find attributes that are highly corrected (ideally >0.75)
-highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.8)
-################################## print indexes of highly correlated attributes
-print(highlyCorrelated)
-################################## print names of highly correlated attributes
-featureNames <- colnames(allData %>% select_if(is.numeric))
-print(featureNames[highlyCorrelated])
 
 ##################### Split data
 ######################## One half of training set is used to train
@@ -100,6 +88,23 @@ xytrain$class %>% summary
 xycal$class %>% summary
 xytest$class %>% summary
 xytrain %>% dim
+
+######################## Produce correlation matrix of train set
+xytrain2 <- xytrain %>% select_if(is.numeric)
+colnames(xytrain2) <- paste0('V', 1:ncol(xytrain2))
+correlationMatrix <- cor(xytrain2)
+print(correlationMatrix)
+################################## summarize the correlation matrix
+corrplot(correlationMatrix)
+################################## find attributes that are highly
+################################## corrected (ideally >0.75)
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.8)
+################################## print indexes of highly correlated attributes
+print(highlyCorrelated)
+################################## print names of highly correlated attributes
+featureNames <- colnames(xytrain %>% select_if(is.numeric))
+print(featureNames[highlyCorrelated])
+rm(xytrain2)
 
 #################### Train Model
 ######################## Settings
