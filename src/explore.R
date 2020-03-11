@@ -57,7 +57,8 @@ rm(testDataRaw)
 ######################## Remove columns with near zero variance
 ######################## necessary for many algorithms
 ######################## it is not needed by algorithms like xgboost
-######################## but it speeds up the training
+######################## but it speeds up the training.
+######################## Quite time consuming
 nzv <- nearZeroVar(allData)
 allData <- allData[,-nzv]
 
@@ -127,17 +128,17 @@ fitControl <- trainControl(
 
 ######################## Training
 if (trainAgain) {
-fit <- train(
-  x = xytrain %>% select(-class) %>% as.matrix,
-  y = xytrain$class,
-  tuneLength = 5,
-  method = method,
-  trControl = fitControl,
-  metric = 'ROC',
-  verbose = TRUE
-)
-fit$results %>% arrange(-ROC) %>% head
-saveRDS(fit, file = 'model_new.RData')
+  fit <- train(
+    x = xytrain %>% select(-class) %>% as.matrix,
+    y = xytrain$class,
+    tuneLength = 5,
+    method = method,
+    trControl = fitControl,
+    metric = 'ROC',
+    verbose = TRUE
+  )
+  fit$results %>% arrange(-ROC) %>% head
+  saveRDS(fit, file = 'model_new.RData')
 }
 ##################### Results
 ######################## Save and load training
@@ -166,7 +167,7 @@ calPredict <- predict(fit,
 pROC_obj_cal <- roc(calPredict$obs, calPredict$below50, ci = TRUE)
 pROC_obj_cal
 plot(pROC_obj_cal)
-############# Set threshold using ROC curve
+############# Set threshold using ROC curve and confusion matrix: I optimised kappa
 threshold <- 0.7
 calPredict <- calPredict %>%
   mutate(pred = if_else(below50 > threshold, 'below50', 'over50') %>% factor)
