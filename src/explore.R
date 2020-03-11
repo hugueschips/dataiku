@@ -18,7 +18,7 @@ library(caret)
 library(corrplot)
 
 #################### Wether or not you want to train again or load results
-trainAgain <- TRUE
+trainAgain <- FALSE
 
 #################### Choice of learning algorith
 ######################## 2 options are provided : xgboost or neural network
@@ -141,7 +141,7 @@ saveRDS(fit, file = 'model_new.RData')
 }
 ##################### Results
 ######################## Save and load training
-if (!(trainAgain)) {fit <- readRDS('model_xgboost.RData')}
+if (!(trainAgain)) {fit <- readRDS('model_xgb.RData')}
 
 ######################## Importance of variables
 ############################ Here feature names are not helping, 
